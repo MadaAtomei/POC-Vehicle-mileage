@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import './App.css';
+import Logo from './Logo';
 
 function App() {
   // State to store the input value
   const [inputValue, setInputValue] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   // Handle input change
   const handleInputChange = (event) => {
@@ -14,7 +17,8 @@ function App() {
     event.preventDefault();
     postMileageData(inputValue);
     // Display the input value when the form is submitted
-    alert(`You entered: ${inputValue}`);
+    // alert(`You entered: ${inputValue}`);
+    setShowModal(true);
   };
 
   const postMileageData = async (inputValue) => {
@@ -43,24 +47,34 @@ function App() {
   
 
   return (
-    <div className="App">
-      <h1>Simple React Form</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="app">
+      <Logo />
+      <form className="form-container" onSubmit={handleSubmit}>
+        <label className="form-label" htmlFor="input-element">
+          Enter mileage:
+        </label>
+        <input
+            id="input-element"
+            className="form-control"
+            type="text" 
+            value={inputValue} 
+            onChange={handleInputChange} 
+          />
         <div>
-          <label>
-            Enter some text:
-            <input 
-              type="text" 
-              value={inputValue} 
-              onChange={handleInputChange} 
-            />
-          </label>
-        </div>
-        <div>
-          <button type="submit">Submit</button>
+          <button className="app-button" type="submit">Submit</button>
         </div>
       </form>
-      <button onClick={getMileageData}>Get</button>
+      {/* <button onClick={getMileageData}>Get</button> */}
+      {showModal && (
+        <div className="modal-backdrop">
+          <div className="modal-content">
+            <div className="modal-text">
+              Mileage saved successfully!
+            </div>
+            <button className="app-button" onClick={() => setShowModal(false)}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
